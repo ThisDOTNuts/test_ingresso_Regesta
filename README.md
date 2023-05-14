@@ -16,3 +16,6 @@ Dopo la verifica in ingresso le scelte possibili dipendono dal campo "è vendito
 
 Un venditore può aggiungere articoli al suo magazzino.
 Un privato può acquistare articoli.
+
+### info utili
+un database con dati d'esempio si trova all'interno della cartella sotto il nome di ***myshop.sql***
