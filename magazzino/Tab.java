@@ -132,20 +132,6 @@ public class Tab {
         return risultato;
 
     }
-    /**
-     * Restituisce una lista di chi può comprare
-     * */
-    public List<String> listaMagazziniPrivati ()throws SQLException{
-        PreparedStatement pst = this.conn.prepareStatement("SELECT * FROM Magazzini where venditore=0");
-        ResultSet rst=pst.executeQuery();
-        List<String> risultato=new ArrayList<>();
-        while(rst.next()) {
-            risultato.add(rst.getString("nome"));
-            System.out.println(risultato);
-        }
-        return risultato;
-    }
-
     public List<String>listaPossessoriArticolo (String nomeArticolo,int quantità)throws SQLException{
         List<String> venditori=listaMagazziniVenditori();
         List<String> venditoriPassati=new ArrayList<>();
@@ -160,18 +146,6 @@ public class Tab {
         return venditoriPassati;
     }
 
-    public void stampaPossibilitàAcquisto(String nomeArticolo,int quantità)throws SQLException{
-        List<String> listaPossibiliVenditori= listaPossessoriArticolo(nomeArticolo,quantità);
-        for (int i=0; i<listaPossibiliVenditori.size();i++){
-            PreparedStatement pst=this.conn.prepareStatement("SELECT tempiDiConsegna FROM Magazzini where nome=?");
-            pst.setString(1,listaPossibiliVenditori.get(i));
-            ResultSet rst = pst.executeQuery();
-            rst.next();
-            String aggiunta= " tempi di consegna:"+rst.getString("tempiDiConsegna");
-            listaPossibiliVenditori.set(i,listaPossibiliVenditori.get(i).concat(aggiunta));
-        }
-        listaPossibiliVenditori.forEach(System.out::println);
-    }
 
     public void stampaPossibilitàAcquisto(List<String> venditoriPossibili,String nomeArticolo,int quantità)throws SQLException{
         for (int i=0; i<venditoriPossibili.size();i++){
@@ -239,7 +213,6 @@ public class Tab {
         }
         break;
         }while(true);
-        //scanner2.close(); mi da errore
         return scelta;
 
     }
@@ -274,31 +247,6 @@ public class Tab {
     public void close() throws SQLException{
         this.conn.close();
     }
-    /**
-     * Trova articolo tramite nome in magazzino di chi richiama il metodo
-     * */
-    public Articolo trovaArticolo (String nomeArticolo) throws SQLException{
-        PreparedStatement pst = this.conn.prepareStatement("SELECT * FROM MagazzinoDi"+this.userName+" where nome=?");
-        pst.setString(1,nomeArticolo);
-        ResultSet re = pst.executeQuery();
-        if(re.next()) {
-            return new Articolo(nomeArticolo,re.getInt("quantità"),re.getBoolean("scontato"),re.getDouble("prezzo") );
-        }
-        return null;
-    }
-    /**
-     * Trova articolo tramite NOME nel magazzino passato
-     * */
-    public Articolo trovaArticolo (String nomeArticolo,String nomeMagazzino) throws SQLException{
-        PreparedStatement pst = this.conn.prepareStatement("SELECT * FROM "+nomeMagazzino+" where nome=?");
-        pst.setString(1,nomeArticolo);
-        ResultSet re = pst.executeQuery();
-        if(re.next()) {
-            return new Articolo(nomeArticolo,re.getInt("quantità"),re.getBoolean("scontato"),re.getDouble("prezzo") );
-        }
-        return null;
-    }
-
     public Articolo trovaArticolo (String nomeMagazzino,String nomeArticolo,int richiesta) throws SQLException{
         PreparedStatement pst = this.conn.prepareStatement("SELECT * FROM MagazzinoDi"+nomeMagazzino+" where nome=? and quantità>=?");
         pst.setString(1,nomeArticolo);
@@ -323,25 +271,6 @@ public class Tab {
         pst.setBoolean(3,scontato);
         pst.setDouble(4,prezzo);
         pst.execute();
-    }
-
-    /**
-     * inserisce articolo nel proprio magazzino utilizzando Articolo esistente
-     * */
-    public void inserisciArticolo (Articolo articolo) throws SQLException{
-        PreparedStatement pst = this.conn.prepareStatement("INSERT into magazzinodi"+this.userName+"(nome,quantità,scontato,prezzo) values(?,?,?,?)");
-        pst.setString(1,articolo.getNome());
-        pst.setInt(2,articolo.getQuantità());
-        pst.setBoolean(3,articolo.isèInSconto());
-        pst.setDouble(4,articolo.getPrezzo());
-        pst.execute();
-    }
-    public void stampaPropriaLista()throws SQLException{
-        Statement stm = this.conn.createStatement();
-        ResultSet rst= stm.executeQuery("SELECT * FROM MagazzinoDi"+this.userName);
-        while(rst.next()){
-
-        }
     }
 }
 

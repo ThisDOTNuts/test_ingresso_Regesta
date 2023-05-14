@@ -15,20 +15,6 @@ public class Articolo {
         this.èInSconto = èInSconto;
         this.prezzo = prezzo;
     }
-    public Articolo(String nome, int quantità,double prezzo) {
-        this();
-        this.nome = nome;
-        this.quantità = quantità;
-        this.prezzo= prezzo;
-
-    }
-    public Articolo() {
-        this("NomeDefault",0,false,0.00);
-    }
-    public Articolo(String nome, int quantità) {
-        this.nome = nome;
-        this.quantità = quantità;
-    }
 
     /**
      *                          GET
