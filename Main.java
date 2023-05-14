@@ -23,11 +23,6 @@ public class Main {
             }
 
         }
-
-
-
-
-
         tab.close();
     }catch (ClassNotFoundException | SQLException e){
         e.printStackTrace();

@@ -119,7 +119,6 @@ public class Metodi {
 
             System.out.println("Scegli una opzione\n"+"1)Compra articolo\n"+"2)Esci");
             int scelta = scanner.nextInt();
-        System.out.println(scelta+"porca madonna");
                 switch (scelta) {
                     case 1:
                         richiamoCompra(db);
